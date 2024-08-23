@@ -11,6 +11,9 @@ namespace SistemaDeTarefas
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // CORS Origins variable
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -27,6 +30,18 @@ namespace SistemaDeTarefas
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 
+            // CORS Configuration
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                                      policy =>
+                                      {
+                                          policy.WithOrigins("http://localhost:5173", "http://localhost")
+                                                              .AllowAnyHeader()
+                                                              .AllowAnyMethod();
+                                      });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,6 +50,9 @@ namespace SistemaDeTarefas
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // CORS Running
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
 
