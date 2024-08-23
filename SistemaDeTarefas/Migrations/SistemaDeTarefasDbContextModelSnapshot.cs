@@ -60,6 +60,11 @@ namespace SistemaDeTarefas.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
